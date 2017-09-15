@@ -5,18 +5,11 @@ const app = express();
 
 // setup the app middleware
 require('./middleware/appMiddleware')(app);
+const err = require('./middleware/errMiddleware');
 
 // setup the api
 app.use('/api', api);
-
-// setup global error handling
-app.use(function(err, req, res, next) {
-  if(err) {
-    res.status(500).send(err);
-  }
-  // everything is good
-  next();
-})
+app.use(err());
 
 // export for testing
 module.exports = app;
