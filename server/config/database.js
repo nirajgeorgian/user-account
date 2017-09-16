@@ -1,16 +1,17 @@
-"use strict";
+
 const mongoose = require('mongoose');
 // use native promise api instead of mpromise
-mongoose.Promise = global.Promise;
+mongoose.Promise = require('bluebird');
 const config = require('./config');
 
 // connect to the database
-const connection = mongoose.createConnection(config.dbPath, {
-  useMongoClient: true,
-})
+let connection = mongoose.connect(config.db.url,{ useMongoClient: true }, function(err, conn) {
+  if (err) return err;
+});
+
 connection
   .then(function(db) {
-    console.log("successfully connected to " + config.dbPath);
+    console.log("successfully connected to " + config.db.url);
   })
   .catch(function(err) {
     console.log(err);

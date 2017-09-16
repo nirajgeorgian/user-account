@@ -1,10 +1,17 @@
 "use strict";
-
 const router = require('express').Router();
+const controller = require('./userController');
+
+// just invoking the params property
+router.param('id', controller.params)
+
+router.route('/:id')
+  .get(controller.getOne)
+  .put(controller.put)
+  .delete(controller.delete)
 
 router.route('/')
-  .get(function(req, res, next) {
-    res.send({ok: true});
-  });
+  .get(controller.get)
+  .post(controller.post)
 
 module.exports = router;

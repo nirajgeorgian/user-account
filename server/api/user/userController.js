@@ -12,8 +12,8 @@ gerOne: function() {}
  ------ end -----
  */
 
-exports.params = function(req, res, next) {
-  User.findById({})
+exports.params = function(req, res, next, id) {
+  User.findById(id)
     .populate('connections')
     .exec()
     .then(function(user) {
@@ -34,7 +34,6 @@ exports.params = function(req, res, next) {
 exports.get = function(req, res, next) {
   User.find({})
     .populate('connections')
-    .exec()
     .then(function(users) {
       if(!users) {
         next(new Error('no users found'))
@@ -45,7 +44,6 @@ exports.get = function(req, res, next) {
     .catch(function(err) {
       next(new Error(err));
     })
-  res.json(user);
 }
 
 exports.getOne = function(req, res, next) {
@@ -54,14 +52,13 @@ exports.getOne = function(req, res, next) {
 }
 
 exports.post = function(req, res, next) {
-  const newUser = reqbody;
+  const newUser = req.body;
   User.create(newUser)
     .then(function(user) {
       res.json(user);
+    }, function(err) {
+      next(new Error(err));
     })
-    .catch(function(err) {
-      next(err);
-    });
 }
 
 exports.put = function(req, res, next) {

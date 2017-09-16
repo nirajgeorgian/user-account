@@ -1,3 +1,5 @@
 module.exports = {
-  dbPath: 'mongodb://localhost/blog-api'
+  db: {
+    url: 'mongodb://localhost/blog-api-test'
+  }
 }
