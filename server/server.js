@@ -17,7 +17,7 @@ app.use(function(err,req, res, next) {
   if(err.name == 'UnauthorizedError') {
     res.status(401).send("Invalid token");
   }
-  res.status(500).send("Server internal error");
+  res.status(500).send(err);
 })
 // export for testing
 module.exports = app;

@@ -66,7 +66,7 @@ exports.post = function(req, res, next) {
 exports.put = function(req, res, next) {
   const user = req.user;
   const update = req.body;
-  _.$.merge(user, update);
+  _.merge(user, update);
   user.save(function(err, saved) {
     if(err) {
       next(err);

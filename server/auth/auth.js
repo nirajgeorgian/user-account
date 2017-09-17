@@ -16,9 +16,11 @@ exports.signToken = function(id) {
 exports.decodeToken = function() {
   return function(req, res, next) {
     if(req.query && req.query.hasOwnProperty('access_token')) {
+      console.log("you are here");
       req.headers.authorization = 'Bearer ' + req.query.access_token;
     }
     checkToken(req, res, next);
+    // next();
   }
 }
 

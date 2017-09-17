@@ -9,7 +9,7 @@ const PostSchema = new Schema({
   category: [ {type: Schema.Types.ObjectId, ref: 'category'} ],
   post_created_on: { type: Date, default: Date.now },
   post_updated_on: Date,
-  draft: { type: boolean, default: false }
+  draft: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('post', PostSchema);

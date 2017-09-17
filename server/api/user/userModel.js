@@ -5,14 +5,14 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   username: { type: String, unique: true, required: true },
-  firstname: String,
-  lastname: String,
-  email: String,
+  firstname: {type: String, lowercase: true},
+  lastname: {type: String, lowercase: true},
+  email: {type: String, lowercase: true},
   password: {type: String, required: true},
   date_of_joining: { type: Date, default: Date.now },
   connections: [ {type: Schema.Types.ObjectId, ref: 'user'} ],
   date_of_birth: Date
-});
+}, { runSettersOnQuery: true });
 
 // use pre hooks to use bcrypt
 UserSchema.pre('save', function(next) {
