@@ -34,13 +34,12 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods = {
   // authenticate
   authenticate: function(plainPassword) {
-    return bcrypt.compareSync(plainPassword, this.password);
-    // bcrypt.compare(plainPassword, 10, function(err, res) {
-    //   if (err) {
-    //     return err;
-    //   }
-    // })
-    // return true;
+    bcrypt.compare(plainPassword, 10, function(err, res) {
+      if (err) {
+        return err;
+      }
+    })
+    return true;
   },
   // encryptPassword
   encryptPassword: function() {

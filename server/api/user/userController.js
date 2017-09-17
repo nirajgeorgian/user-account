@@ -1,5 +1,6 @@
 "use strict";
 const User = require('./userModel');
+const auth = require('../../auth/auth');
 const _ = require('lodash');
 
 /*
@@ -55,7 +56,8 @@ exports.post = function(req, res, next) {
   const newUser = req.body;
   User.create(newUser)
     .then(function(user) {
-      res.json(user);
+      const token = auth.signToken(user._id);
+      res.json({token: token});
     }, function(err) {
       next(new Error(err));
     })

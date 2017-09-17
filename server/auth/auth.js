@@ -24,7 +24,19 @@ exports.decodeToken = function() {
 
 exports.getFreshUser = function() {
   return function(req, res, next) {
-
+    User.findById(req.user._id)
+      .then(function(user) {
+        if(!user) {
+          // if no user was found then it was a valid jwt but the user token was expired or user was deleted
+          res.status(401).send("Unauthorised access")
+        } else {
+          req.user = user;
+          next();
+        }
+      })
+      .catch(function(err) {
+        next(err);
+      })
   }
 }
 
