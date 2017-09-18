@@ -16,6 +16,7 @@ exports.signToken = function(id) {
 exports.decodeToken = function() {
   return function(req, res, next) {
     if(req.query && req.query.hasOwnProperty('access_token')) {
+      // add oooo keyword to auth key
       console.log("you are here");
       req.headers.authorization = 'Bearer ' + req.query.access_token;
     }
@@ -46,7 +47,6 @@ exports.verifyUser = function() {
   return function(req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
-    console.log(username);
     // check for username
     if(!username || !password) {
       next();

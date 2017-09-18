@@ -8,6 +8,10 @@ exports.signin = function() {
     // console.log(auth.signToken(req.user));
     // console.log(req.user._id);
     let token = auth.signToken(req.user._id);
-    res.json(token);
+    req.headers.authorization = 'Bearer ' + token;
+    console.log(req.headers);
+    res.json({
+    "token": token
+    });
   }
 }
