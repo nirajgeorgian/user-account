@@ -61,6 +61,10 @@ exports.sendmail = function(req,res,next) {
         },
         tls: { rejectUnauthorized: false}
     });
+    // fs.stat('./templates/accountSuccessEmail.html', function(err, stat) {
+    //     console.log(stat)
+    // })
+
     fs.readFile('./templates/accountSuccessEmail.html', function(err, data) {
         if(err) console.log(err);
         console.log(data);
