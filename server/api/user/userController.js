@@ -57,6 +57,7 @@ exports.post = function(req, res, next) {
   User.create(newUser)
     .then(function(user) {
       const token = auth.signToken(user._id);
+      req.headers.authorization = 'Bearer ' + token
       res.json({token: token});
     }, function(err) {
       next(new Error(err));

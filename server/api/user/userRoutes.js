@@ -7,12 +7,12 @@ const controller = require('./userController');
 router.param('id', controller.params)
 
 router.route('/:id')
-  .get([auth.decodeToken()],controller.getOne)
-  .put([auth.decodeToken()],controller.put)
+  .get(controller.getOne)
+  .put(auth.decodeToken(), controller.put)
   .delete([auth.decodeToken()],controller.delete)
 
 router.route('/')
-  .get([auth.decodeToken()],controller.get)
+  .get([auth.headerToken()],controller.get)
   .post(controller.post)
 
 module.exports = router;

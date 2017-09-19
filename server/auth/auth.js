@@ -17,12 +17,27 @@ exports.decodeToken = function() {
   return function(req, res, next) {
     if(req.query && req.query.hasOwnProperty('access_token')) {
       // add oooo keyword to auth key
-      console.log("you are here");
       req.headers.authorization = 'Bearer ' + req.query.access_token;
     }
     checkToken(req, res, next);
     // next();
   }
+}
+
+exports.headerToken = function() {
+  return function(req, res, next) {
+    if(req.headers.authorization) {
+      // token = req.headers.authorization.split(" ")[1];
+      checkToken(req, res, next);
+      // next();
+    } else {
+      return res.status(400).json({
+        "success": "failure",
+        "token": "not provided"
+      })
+    }
+  }
+
 }
 
 exports.getFreshUser = function() {
@@ -31,7 +46,7 @@ exports.getFreshUser = function() {
       .then(function(user) {
         if(!user) {
           // if no user was found then it was a valid jwt but the user token was expired or user was deleted
-          res.status(401).send("Unauthorised access")
+          res.status(401).json({"status" : "Unauthorised access"})
         } else {
           req.user = user;
           next();
@@ -50,16 +65,16 @@ exports.verifyUser = function() {
     // check for username
     if(!username || !password) {
       next();
-      res.status(400).send("You need a username and password")
+      res.status(400).json({"status": "You need a username and password"})
     }
     // or else the username is available for furthe lookup
     User.findOne({username: username})
       .then(function(user) {
         if(!user) {
-          res.status(401).send("No user associated with this " + username)
+          res.status(401).json({"status":"No user associated with this " + username})
         } else {
           if(!user.authenticate(password)) {
-            res.status(401).send("wrong password")
+            res.status(401).json({"status" : "wrong password" })
           } else {
             // everything is good "walla" update req.user = { _id: id } to full user object
             req.user = user;

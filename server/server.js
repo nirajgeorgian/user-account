@@ -15,9 +15,19 @@ app.use('/auth', auth)
 // app.use(err());
 app.use(function(err,req, res, next) {
   if(err.name == 'UnauthorizedError') {
-    res.status(401).send("Invalid token");
+    res.status(401).json({
+      "success": "failure",
+      "message": "Invalid token",
+      "statusCode": 401,
+    });
+  } else {
+    res.status(500).json({
+      "success": "failure",
+      "message": "Server error",
+      "statusCode": 500
+    });
   }
-  res.status(500).send(err);
 })
+
 // export for testing
 module.exports = app;
