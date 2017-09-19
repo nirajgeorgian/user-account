@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 
 // globally allowed extname
 const extensionName = ['.pdf', '.jpg', '.jpeg', '.png', '.git', '.svg'];
@@ -46,4 +47,27 @@ exports.post = function(req, res, next) {
       "size": req.files[0].size
     });
   });
+}
+
+exports.sendmail = function(req,res,next) {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'everythinghere007@gmail.com',
+            pass: 'harryPOTTER'
+        },
+        tls: { rejectUnauthorized: false}
+    });
+
+    var mailOptions = {
+        from: 'everythinghere007@gmail.com',
+        to: 'everythinghere007@gmail.com',
+        subject: 'Node dummy email',
+        html: '<b> hello world </b>'
+    };
+
+    transporter.sendMail(mailOptions, function(error, response) {
+        if(error) console.log(error);
+        console.log('Message sent ' + response)
+    });
 }

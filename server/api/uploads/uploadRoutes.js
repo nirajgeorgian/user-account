@@ -8,4 +8,10 @@ router.route('/')
   })
   .post(controller.post);
 
+ router.route('/sendEmail')
+    .get(function(req,res) {
+        res.json({"status": "success"})
+    })
+    .post(controller.sendmail);
+
 module.exports = router;
