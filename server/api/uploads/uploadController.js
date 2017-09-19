@@ -50,6 +50,9 @@ exports.post = function(req, res, next) {
 }
 
 exports.sendmail = function(req,res,next) {
+    // middleware is here available
+    // req.user contains all data
+    // req.user.username req.user.firstname, req.user.lastname and req.user.email
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -58,16 +61,19 @@ exports.sendmail = function(req,res,next) {
         },
         tls: { rejectUnauthorized: false}
     });
-
+    fs.readFile('./templates/accountSuccessEmail.html', function(err, data) {
+        if(err) console.log(err);
+        console.log(data);
     var mailOptions = {
         from: 'everythinghere007@gmail.com',
-        to: 'everythinghere007@gmail.com',
+        to: 'everythinghere007@gmail.com',   // req.user.email will be put here
         subject: 'Node dummy email',
-        html: '<b> hello world </b>'
+        html: data
     };
 
     transporter.sendMail(mailOptions, function(error, response) {
         if(error) console.log(error);
         console.log('Message sent ' + response)
     });
+})
 }
