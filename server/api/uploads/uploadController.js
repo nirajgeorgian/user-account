@@ -6,7 +6,7 @@ const multer = require('multer');
 const nodemailer = require('nodemailer');
 
 // globally allowed extname
-const extensionName = ['.pdf', '.jpg', '.jpeg', '.png', '.git', '.svg'];
+const extensionName = ['.pdf','.jpg', '.jpeg', '.png'];
 
 // multer options
 let storage = multer.diskStorage({
@@ -39,10 +39,11 @@ exports.post = function(req, res, next) {
     }
   }).any();
   upload(req, res, function(err) {
+    console.log(req.files);
     res.json({
       "success": "success",
       "mimetype": req.files[0].mimetype,
-      "filename": req.files[0].filename,
+      "originalname": req.files[0].originalname,
       "path": req.files[0].path,
       "size": req.files[0].size
     });

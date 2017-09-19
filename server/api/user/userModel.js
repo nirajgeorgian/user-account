@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   lastname: {type: String, lowercase: true},
   email: {type: String, lowercase: true},
   password: {type: String, required: true},
+  profile_picture: String,
   date_of_joining: { type: Date, default: Date.now },
   connections: [ {type: Schema.Types.ObjectId, ref: 'user'} ],
   date_of_birth: Date
