@@ -7,12 +7,12 @@ const controller = require('./categoryContoller');
 router.param('id', controller.params);
 
 router.route('/')
-  .get( controller.get)
-  .post( controller.post)
+  .get([auth.headerToken()], controller.get)
+  .post([auth.headerToken()], controller.post)
 
 router.route('/:id')
   .get([auth.headerToken()], controller.getOne)
-  .put( controller.put)
+  .put([auth.headerToken()], controller.put)
   .delete([auth.headerToken()], controller.delete)
 
 module.exports = router;
