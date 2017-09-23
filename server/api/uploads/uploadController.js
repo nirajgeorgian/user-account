@@ -62,54 +62,23 @@ exports.post = function(req, res, next) {
 
 // const htmlData = fs.readFileSync('./templates/preview.html');
 
-exports.sendmail = function(req, res, next) {
-  const passwordReset = new EmailTemplate('./templates/preview');
-  const data = {parag: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'}
+exports.sendmail = function(req, res, next, to, subject, text, template, data, from='nirajgeorgian01@gmail.com') {
+  const passwordReset = new EmailTemplate(template);
   passwordReset.render(data, function(err, result) {
-    console.log(result.html);
     if (err) return err;
     const msg = {
-      to: 'nirajgeorgian01@gmail.com',
-      from: 'test@example.com',
-      subject: 'Sending with SendGrid is Fun',
-      text: 'and easy to do anywhere, even with Node.js',
+      to: to,
+      from: 'nirajgeorgian01@gmail.com',
+      subject: subject,
+      text: text,
       html: result.html,
     };
     sgMail.send(msg, function(err, sended) {
-      if (err) {
-        res.status(401).json({"success": "failure"})
+      if (sended) {
+        next();
       } else {
-        res.json(sended);
+        return res.status(401).json({"success": "failure"});
       }
     });
   })
 }
-
-// exports.sendmail = function(req,res,next) {
-//     // middleware is here available
-//     // req.user contains all data
-//     // req.user.username req.user.firstname, req.user.lastname and req.user.email
-//     const transporter = nodemailer.createTransport({
-//         service: 'gmail',
-//         auth: {
-//             user: 'everythinghere007@gmail.com',
-//             pass: 'harryPOTTER'
-//         },
-//         tls: { rejectUnauthorized: false}
-//     });
-//     fs.readFile('./templates/accountSuccessEmail.html', function(err, data) {
-//         if(err) console.log(err);
-//         console.log(data);
-//     var mailOptions = {
-//         from: 'everythinghere007@gmail.com',
-//         to: 'everythinghere007@gmail.com',   // req.user.email will be put here
-//         subject: 'Node dummy email',
-//         html: data
-//     };
-//
-//     transporter.sendMail(mailOptions, function(error, response) {
-//         if(error) console.log(error);
-//         console.log('Message sent ' + response)
-//     });
-// })
-// }

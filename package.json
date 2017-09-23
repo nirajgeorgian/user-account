@@ -16,6 +16,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.18.1",
     "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
     "ejs": "^2.5.7",
     "email-templates": "^2.7.1",
     "express": "^4.15.4",

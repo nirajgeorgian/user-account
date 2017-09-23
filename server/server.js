@@ -13,7 +13,7 @@ const err = require('./middleware/errMiddleware');
 // ejs template engine.
 app.set('view engine', ejs);
 // setup the api
-app.use('/api', api);
+app.use('/api/v1', api);
 app.use('/auth', auth)
 // app.use(err());
 app.use(function(err,req, res, next) {

@@ -11,8 +11,22 @@ router.route('/:id')
   .put(auth.decodeToken(), controller.put)
   .delete([auth.decodeToken()], controller.delete)
 
+// forgot password
+router.route('/password')
+  .post(controller.sendPasswordReset)
+
+router.route('/password/:token')
+  .get(controller.passwordReset)
+  .post(controller.postResetPassword)
+
+
+// routes for account details for email activation password reset etc
+router.route('/account/:token')
+  .get(controller.get)
+  .post(controller.resend)
+
 router.route('/')
-  .get([auth.headerToken()], controller.get)
+  .get( controller.get)
   .post(controller.post)
 
 module.exports = router;

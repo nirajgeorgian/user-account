@@ -1,4 +1,5 @@
 "use strict";
+require('dotenv').config()
 const _ = require('lodash');
 
 // default config object for our api
@@ -11,7 +12,7 @@ const config = {
   secrets: {
     jwt: process.env.JWT || 'OoOO'
   },
-  sendgrid_env_key: process.env.SENDGRID_API_KEY || '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',
+  sendgrid_env_key: process.env.SENDGRID_API_KEY,
 };
 process.env.NODE_ENV = process.env.NODE_ENV || config.dev;
 
