@@ -23,17 +23,13 @@ exports.params = function(req, res, next, id) {
 exports.getAll = function(req,res,next) {
     Tags.find({}, function(err, tags) {
         if(err) return err;
-        res.json({"tags": "none"});
+        res.json(tags);
     })
 }
 
 exports.post = function(req,res,next) {
-    tagsData = {};
-    console.log(req.body);
 
-    var NewTags = new Tags(tagsData);
-
-    Tags.create(tagsData, function(err, tags) {
+    Tags.create(req.body, function(err, tags) {
         if (err) return next(new Error('Something is wrong'));
         res.json({"done": "success"});
     })

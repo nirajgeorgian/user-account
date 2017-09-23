@@ -4,17 +4,12 @@ const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
-<<<<<<< HEAD
-const sgMail = require('@sendgrid/mail');
 const config = require('../../config/config')
-=======
-const config = require('../../config/config');
 const EmailTemplate = require('email-templates').EmailTemplate;
 
 // required for sending mail
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(config.sendgrid_env_key);
->>>>>>> master
 
 // globally allowed extname
 const extensionName = ['.jpg', '.jpeg', '.png'];
@@ -68,56 +63,7 @@ exports.post = function(req, res, next) {
   });
 }
 
-<<<<<<< HEAD
-exports.sendmail = function(req,res,next) {
-    // middleware is here available
-    // req.user contains all data
-    // req.user.username req.user.firstname, req.user.lastname and req.user.email
-//     var transporter = nodemailer.createTransport({
-//         service: 'gmail',
-//         auth: {
-//             user: 'everythinghere007@gmail.com',
-//             pass: 'harryPOTTER'
-//         },
-//         tls: { rejectUnauthorized: false}
-//     });
-//     // fs.stat('./templates/accountSuccessEmail.html', function(err, stat) {
-//     //     console.log(stat)
-//     // })
-//
-//     fs.readFile('./templates/accountSuccessEmail.html', function(err, data) {
-//         if(err) console.log(err);
-//         console.log(data);
-//     var mailOptions = {
-//         from: 'everythinghere007@gmail.com',
-//         to: 'everythinghere007@gmail.com',   // req.user.email will be put here
-//         subject: 'Node dummy email',
-//         html: data
-//     };
-//
-//     transporter.sendMail(mailOptions, function(error, response) {
-//         if(error) console.log(error);
-//         console.log('Message sent ' + response)
-//     });
-// })
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-console.log(process.env.SENDGRID_API_KEY);
-
-const msg = {
-    from: 'everythinghere007@gmail.com',
-    to: 'everythinghere007@gmail.com',
-    subject: 'Hello Sendgrid',
-    text: 'hello',
-    html: '<b> Hello world </b>'
-};
-
-    sgMail.send(msg).then(function() {
-        console.log('sent email');
-    }).catch(function(err) {
-        console.log(err);
-    })
-=======
-// const htmlData = fs.readFileSync('./templates/preview.html');
+const htmlData = fs.readFileSync('./templates/preview.html');
 
 exports.sendmail = function(req, res, next, to, subject, text, template, data, from='nirajgeorgian01@gmail.com') {
   const passwordReset = new EmailTemplate(template);
@@ -138,5 +84,4 @@ exports.sendmail = function(req, res, next, to, subject, text, template, data, f
       }
     });
   })
->>>>>>> master
 }
