@@ -4,11 +4,20 @@ const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
+<<<<<<< HEAD
 const sgMail = require('@sendgrid/mail');
 const config = require('../../config/config')
+=======
+const config = require('../../config/config');
+const EmailTemplate = require('email-templates').EmailTemplate;
+
+// required for sending mail
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(config.sendgrid_env_key);
+>>>>>>> master
 
 // globally allowed extname
-const extensionName = ['.pdf', '.jpg', '.jpeg', '.png', '.git', '.svg'];
+const extensionName = ['.jpg', '.jpeg', '.png'];
 
 // multer options
 let storage = multer.diskStorage({
@@ -18,7 +27,7 @@ let storage = multer.diskStorage({
   filename: function(req, file, cb) {
     crypto.randomBytes(10, function(err, buff) {
       if (err) return err;
-      const fileName = buff.toString('hex') + '-' + Date.now() + path.extname(file.originalname);
+      const fileName = buff.toString('hex') + '-' + Date.now() + (path.extname(file.originalname)).toLowerCase();
       cb(null, fileName);
     });
   }
@@ -32,28 +41,34 @@ exports.post = function(req, res, next) {
   let upload = multer({
     storage: storage,
     fileFilter: function(req, file, cb) {
-      var extName = path.extname(file.originalname);
+      var extName = (path.extname(file.originalname)).toLowerCase();
       if(extensionName.includes(extName)) {
         return cb(null, true);
       } else {
         return res.status(409).json({
           "success": "failure",
-          "statusCode": 409
+          "statusCode": 409,
+          "message": "only images are allowed"
         });
       }
     }
   }).any();
   upload(req, res, function(err) {
-    res.json({
-      "success": "success",
-      "mimetype": req.files[0].mimetype,
-      "filename": req.files[0].filename,
-      "path": req.files[0].path,
-      "size": req.files[0].size
-    });
+    fs.chmod(req.files[0].path, 0o444, function(err, done) {
+      if (err) return next(err);
+      res.json({
+        "success": "success",
+        "mimetype": req.files[0].mimetype,
+        "originalname": req.files[0].originalname,
+        "path": req.files[0].path,
+        "size": req.files[0].size
+      });
+    })
+    console.log(req.files[0].path);
   });
 }
 
+<<<<<<< HEAD
 exports.sendmail = function(req,res,next) {
     // middleware is here available
     // req.user contains all data
@@ -101,4 +116,27 @@ const msg = {
     }).catch(function(err) {
         console.log(err);
     })
+=======
+// const htmlData = fs.readFileSync('./templates/preview.html');
+
+exports.sendmail = function(req, res, next, to, subject, text, template, data, from='nirajgeorgian01@gmail.com') {
+  const passwordReset = new EmailTemplate(template);
+  passwordReset.render(data, function(err, result) {
+    if (err) return err;
+    const msg = {
+      to: to,
+      from: 'nirajgeorgian01@gmail.com',
+      subject: subject,
+      text: text,
+      html: result.html,
+    };
+    sgMail.send(msg, function(err, sended) {
+      if (sended) {
+        next();
+      } else {
+        return res.status(401).json({"success": "failure"});
+      }
+    });
+  })
+>>>>>>> master
 }

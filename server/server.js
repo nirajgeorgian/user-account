@@ -1,7 +1,8 @@
 "use strict";
 const express = require('express');
 const api = require('./api/api');
-const auth = require('./auth/routes')
+const auth = require('./auth/routes');
+const ejs = require('ejs');
 const app = express();
 require('./config/database');
 
@@ -9,15 +10,27 @@ require('./config/database');
 require('./middleware/appMiddleware')(app);
 const err = require('./middleware/errMiddleware');
 
+// ejs template engine.
+app.set('view engine', ejs);
 // setup the api
-app.use('/api', api);
+app.use('/api/v1', api);
 app.use('/auth', auth)
 // app.use(err());
 app.use(function(err,req, res, next) {
   if(err.name == 'UnauthorizedError') {
-    res.status(401).send("Invalid token");
+    res.status(401).json({
+      "success": "failure",
+      "message": "Invalid token",
+      "statusCode": 401,
+    });
+  } else {
+    res.status(500).json({
+      "success": "failure",
+      "message": "Server error",
+      "statusCode": 500
+    });
   }
-  res.status(500).send(err);
 })
+
 // export for testing
 module.exports = app;

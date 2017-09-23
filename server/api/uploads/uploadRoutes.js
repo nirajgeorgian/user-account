@@ -1,6 +1,7 @@
 "use strict";
 const router = require('express').Router();
 const controller = require('./uploadController');
+const auth = require('../../auth/auth');
 
 router.route('/')
   .get(function(req, res) {
@@ -8,10 +9,7 @@ router.route('/')
   })
   .post(controller.post);
 
- router.route('/sendEmail')
-    .get(function(req,res) {
-        res.json({"status": "success"})
-    })
-    .post(controller.sendmail);
+ router.route('/sendmail')
+    .get([auth.headerToken()], controller.sendmail);
 
 module.exports = router;
