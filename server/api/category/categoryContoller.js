@@ -1,5 +1,5 @@
 "use strict";
-const Category = require('./categoryRoutes');
+const Category = require('./categoryModel');
 const _ = require('lodash');
 
 /*
@@ -11,8 +11,7 @@ gerOne: function() {}
  and so on
  ------ end -----
  */
- 
-}
+
 exports.params = function(req, res, next, id) {
   Category.findById(id)
     .then(function(category) {
@@ -25,21 +24,36 @@ exports.params = function(req, res, next, id) {
     })
     .catch(function(err) {
       if(err) {
-        next(new Error(err);
+        next(new Error(err));
       }
     });
 };
 
 exports.get = function(req, res, next) {
-  Category.findById({})
+  Category.find({})
     .then(function(category) {
       res.json(category)
     })
-    .catch(err) {
+    .catch(function(err) {
       if(err) {
         next(new Error(err));
       }
-    }
+    })
+}
+
+exports.post = function(req, res, next) {
+  const category = req.body;
+  Category.create(category)
+    .then(function(category) {
+      if(!category) {
+        next(new Error("not able to create categories"))
+      } else {
+        res.json(category);
+      }
+    })
+    .catch(function(err) {
+      next(new Error(err));
+    })
 }
 
 exports.getOne = function(req, res, next) {
@@ -50,7 +64,7 @@ exports.getOne = function(req, res, next) {
 exports.put = function(req, res, next) {
   const category = req.category;
   const update = req.body;
-  _.$.merge(category, update);
+  _.merge(category, update);
   category.save(function(err, saved) {
     if(err) {
       next(new Error(err))
@@ -61,5 +75,11 @@ exports.put = function(req, res, next) {
 
 exports.delete = function(req, res, next) {
   const category = req.category;
-
+  req.category.remove(function(err, removed) {
+    if (err) {
+      next(new Error(err))
+    } else {
+      res.json(removed)
+    }
+  })
 }
