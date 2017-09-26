@@ -84,9 +84,8 @@ exports.get = function(req, res, next) {
 }
 
 exports.getOne = function(req, res, next) {
-  let currentUser = req.Cuser;
-  console.log(currentUser);
-  res.json(currentUser);
+  let user = req.Cuser;
+  res.json(user);
 }
 
 exports.post = function(req, res, next) {
