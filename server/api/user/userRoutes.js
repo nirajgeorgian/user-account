@@ -7,9 +7,9 @@ const controller = require('./userController');
 router.param('id', controller.params)
 
 router.route('/:id')
-  .get([auth.decodeToken()], controller.getOne)
-  .put(auth.decodeToken(), controller.put)
-  .delete([auth.decodeToken()], controller.delete)
+  .get([auth.headerToken()], controller.getOne)
+  .put(auth.headerToken(), controller.put)
+  .delete([auth.headerToken()], controller.delete)
 
 // forgot password
 router.route('/password')
@@ -26,7 +26,7 @@ router.route('/account/:token')
   .post(controller.resend)
 
 router.route('/')
-  .get( controller.get)
+  .get([auth.headerToken()], controller.get)
   .post(controller.post)
 
 module.exports = router;

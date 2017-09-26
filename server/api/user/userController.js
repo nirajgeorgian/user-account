@@ -19,13 +19,13 @@ gerOne: function() {}
 
 exports.params = function(req, res, next, id) {
   User.findById(id)
-    .populate('connections')
-    .exec()
+    // .populate('user')
+    // .exec()
     .then(function(user) {
       if(!user) {
         next(new Error("no user found"))
       } else {
-        req.user = user;
+        req.Cuser = user;
         next();
       }
     })
@@ -84,8 +84,9 @@ exports.get = function(req, res, next) {
 }
 
 exports.getOne = function(req, res, next) {
-  const user = req.user;
-  res.json(user);
+  let currentUser = req.Cuser;
+  console.log(currentUser);
+  res.json(currentUser);
 }
 
 exports.post = function(req, res, next) {
@@ -124,7 +125,7 @@ exports.post = function(req, res, next) {
 }
 
 exports.put = function(req, res, next) {
-  const user = req.user;
+  const user = req.Cuser;
   const update = req.body;
   _.merge(user, update);
   user.save(function(err, saved) {
@@ -137,7 +138,7 @@ exports.put = function(req, res, next) {
 }
 
 exports.delete = function(req, res, next) {
-  req.user.remove(function(err, removed) {
+  req.Cuser.remove(function(err, removed) {
     if (err) {
       next(err);
     } else {
