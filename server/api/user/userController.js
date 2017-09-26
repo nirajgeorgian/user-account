@@ -19,8 +19,8 @@ gerOne: function() {}
 
 exports.params = function(req, res, next, id) {
   User.findById(id)
-    // .populate('user')
-    // .exec()
+    .populate('user')
+    .exec()
     .then(function(user) {
       if(!user) {
         next(new Error("no user found"))
