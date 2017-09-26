@@ -4,7 +4,7 @@ const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
-const config = require('../../config/config');
+const config = require('../../config/config')
 const EmailTemplate = require('email-templates').EmailTemplate;
 
 // required for sending mail
@@ -27,6 +27,9 @@ let storage = multer.diskStorage({
     });
   }
 });
+
+// sendGrid options
+// var apiKey = process.env.SENDGRID_API_KEY || config.sendgridKey;
 
 // let upload = multer({storage: storage});
 exports.post = function(req, res, next) {
@@ -60,7 +63,7 @@ exports.post = function(req, res, next) {
   });
 }
 
-// const htmlData = fs.readFileSync('./templates/preview.html');
+const htmlData = fs.readFileSync('./templates/preview.html');
 
 exports.sendmail = function(req, res, next, to, subject, text, template, data, from='nirajgeorgian01@gmail.com') {
   const passwordReset = new EmailTemplate(template);

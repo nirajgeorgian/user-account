@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 node_modules
 .env
 .gitignore
+=======
+sendgrid.env
+>>>>>>> 30e6646a1cf936c2eca2b3ec5d108281f5d19de2
