@@ -7,7 +7,7 @@ const config = {
   dev: "development",
   prod: "production",
   test: "testing",
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 8080,
   sendgridKey: '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',
   expireTime: 24 * 60 * 60 * 10,
   secrets: {

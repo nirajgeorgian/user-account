@@ -63,7 +63,7 @@ exports.post = function(req, res, next) {
   });
 }
 
-const htmlData = fs.readFileSync('./templates/preview.html');
+const htmlData = fs.readFileSync('./templates/accountSuccessEmail.html');
 
 exports.sendmail = function(req, res, next, to, subject, text, template, data, from='nirajgeorgian01@gmail.com') {
   const passwordReset = new EmailTemplate(template);
